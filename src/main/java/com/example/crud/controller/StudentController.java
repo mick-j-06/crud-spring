@@ -23,24 +23,29 @@ public class StudentController {
 
     @GetMapping(value = "/student")
     public List<Student> getAllStudents(
-            @RequestParam(name = "page",required = false) String page,
-            @RequestParam(name = "size",required = false) String size
+            @RequestParam(name = "page", required = false) String page,
+            @RequestParam(name = "size", required = false) String size
     ) {
-        if(page != null && size != null) {
-            return studentRepository.findAll(PageRequest.of(Integer.parseInt(page),Integer.parseInt(size)))
+        if (page != null && size != null) {
+            return studentRepository.findAll(PageRequest.of(Integer.parseInt(page), Integer.parseInt(size)))
                     .toList();
         } else {
             return studentRepository.findAll();
         }
     }
 
+    @GetMapping("/student/{id}")
+    public Student getStudent(@PathVariable int id) {
+        return studentRepository.getStudentById(id);
+    }
+
     @DeleteMapping(value = "/student/{id}")
-    public Map<String,String> delete(@PathVariable int id) {
+    public Map<String, String> delete(@PathVariable int id) {
         studentRepository.deleteById(id);
-        Map<String,String> m = new HashMap<>();
-        m.put("id",String.valueOf(id));
-        m.put("code","200");
-        m.put("message","deleted");
+        Map<String, String> m = new HashMap<>();
+        m.put("id", String.valueOf(id));
+        m.put("code", "200");
+        m.put("message", "deleted");
         return m;
     }
 }
