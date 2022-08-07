@@ -17,13 +17,13 @@ public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
-    @PostMapping(value = "/")
+    @PostMapping(value = {"/",""})
     public Student createStudent(@RequestBody Student newStudent) {
         studentRepository.save(newStudent);
         return newStudent;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = {"/",""})
     public List<Student> getAllStudents(
             @RequestParam(name = "page", required = false) String page,
             @RequestParam(name = "size", required = false) String size
