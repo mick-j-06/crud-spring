@@ -5,6 +5,7 @@ import com.example.crud.repository.StudentOperation;
 import com.example.crud.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -12,18 +13,21 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping(value = "/students")
 public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
-    @PostMapping(value = {"/",""})
+    @PostMapping(
+            value = {"/", ""},
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
     public Student createStudent(@RequestBody Student newStudent) {
         studentRepository.save(newStudent);
         return newStudent;
     }
 
-    @GetMapping(value = {"/",""})
+    @GetMapping(value = {"/", ""})
     public List<Student> getAllStudents(
             @RequestParam(name = "page", required = false) String page,
             @RequestParam(name = "size", required = false) String size
@@ -36,12 +40,15 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public Student getStudent(@PathVariable int id) {
         return studentRepository.getStudentById(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(
+            value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
     public Student update(@PathVariable int id, @RequestBody Student student) {
         Student oldStudent = studentRepository.getStudentById(id);
         Student updatedStudent = StudentOperation.update(oldStudent, student);
